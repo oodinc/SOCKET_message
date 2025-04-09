@@ -50,7 +50,7 @@ def handle_client(client_socket):
                     response = f"User Online:\n{user_list}"
                     client_socket.send(response.encode('utf-8'))
 
-                if message_text.startswith("@"):
+                elif message_text.startswith("@"):
                     split = message_text.split(' ', 1)
                     if len(split) == 2:
                         target_name = split[0][1:]
