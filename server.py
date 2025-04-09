@@ -36,8 +36,6 @@ def handle_client(client_socket):
         
         print(f"{name} bergabung.")
         
-        broadcast(f"{name} telah bergabung ke chat!".encode('utf-8'), client_socket)
-        
         while True:
             try:
                 message = client_socket.recv(1024)
