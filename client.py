@@ -27,7 +27,7 @@ def receive():
 # Fungsi untuk mengirim pesan ke server
 def write():
     while True:
-        message = input()
+        message = input("Masukkan Pesan: ")
         if message.startswith('@'):
             # Kirim apa adanya (biar server yang proses)
             client.send(message.encode('utf-8'))
