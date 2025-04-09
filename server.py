@@ -45,6 +45,11 @@ def handle_client(client_socket):
                     raise Exception("Client disconnected")
                     
                 message_text = message.decode('utf-8')
+                if message_text == '/list':
+                    user_list = "\n".join(clients.keys())
+                    response = f"User Online:\n{user_list}"
+                    client_socket.send(response.encode('utf-8'))
+
                 if message_text.startswith("@"):
                     split = message_text.split(' ', 1)
                     if len(split) == 2:
