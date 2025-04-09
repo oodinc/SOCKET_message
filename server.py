@@ -36,17 +36,23 @@ def handle_client(client_socket):
     while True:
         try:
             message = client_socket.recv(1024).decode('utf-8')
-            if message.startswith("@"):
+
+            if message == '/list':
+                # Kirim daftar nama client ke pengirim
+                list_clients = ', '.join(clients.keys())
+                client_socket.send(f"[Daftar Client Online]: {list_clients}".encode('utf-8'))
+            elif message.startswith("@"):
+                # Private message
                 split = message.split(' ', 1)
                 if len(split) == 2:
                     target_name = split[0][1:]
-                    private_msg = f"[Private from {name}]: {split[1]}".encode('utf-8')
-                    if not private_message(name, target_name, private_msg):
-                        client_socket.send(f"User {target_name} tidak ditemukan.".encode('utf-8'))
+                    private_message(target_name, f"[Private from {name}]: {split[1]}".encode('utf-8'))
                 else:
                     client_socket.send("Format salah. Gunakan @nama pesanmu".encode('utf-8'))
             else:
-                broadcast(message.encode('utf-8'), client_socket, name)
+                # Broadcast biasa
+                broadcast(f"{message}".encode('utf-8'), client_socket)
+
         except Exception as e:
             print(f"{name} keluar. Error: {str(e)}")
             broadcast(f"{name} keluar dari chat.".encode('utf-8'))
