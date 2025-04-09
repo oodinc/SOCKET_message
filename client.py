@@ -24,13 +24,12 @@ def write():
     while True:
         message = input("Masukkan Pesan: ")
         if message == '/list':
-            client.send('/list'.encode('utf-8'))
+            client.send(message.encode('utf-8'))
         elif message.startswith('@'):
             client.send(message.encode('utf-8'))
         else:
             full_message = f"{name}: {message}"
             client.send(full_message.encode('utf-8'))
-
 
 receive_thread = threading.Thread(target=receive)
 receive_thread.start()
