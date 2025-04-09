@@ -38,11 +38,9 @@ def handle_client(client_socket):
             message = client_socket.recv(1024).decode('utf-8')
 
             if message == '/list':
-                # Kirim daftar nama client ke pengirim
                 list_clients = ', '.join(clients.keys())
                 client_socket.send(f"[Daftar Client Online]: {list_clients}".encode('utf-8'))
             elif message.startswith("@"):
-                # Private message
                 split = message.split(' ', 1)
                 if len(split) == 2:
                     target_name = split[0][1:]
@@ -50,7 +48,6 @@ def handle_client(client_socket):
                 else:
                     client_socket.send("Format salah. Gunakan @nama pesanmu".encode('utf-8'))
             else:
-                # Broadcast biasa
                 broadcast(f"{message}".encode('utf-8'), client_socket)
 
         except Exception as e:
