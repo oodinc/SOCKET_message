@@ -2,7 +2,7 @@ import socket
 import threading
 
 HOST = '192.168.88.61'
-PORT = 12345
+PORT = 9999
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((HOST, PORT))
@@ -15,6 +15,8 @@ def receive():
         try:
             message = client.recv(1024).decode('utf-8')
             print(message)
+            
+            print("Masukkan Pesan: ", end='', flush=True)
         except:
             print("Terputus dari server")
             client.close()
@@ -27,8 +29,8 @@ def write():
             client.send(message.encode('utf-8'))
         elif message.startswith('@'):
             client.send(message.encode('utf-8'))
-        else:
-            full_message = f"{name}: {message}"
+        elif message.strip() != "":
+            full_message = f"\n{name} menulis: {message}"
             client.send(full_message.encode('utf-8'))
 
 receive_thread = threading.Thread(target=receive)

@@ -2,7 +2,7 @@ import socket
 import threading
 
 HOST = '0.0.0.0'
-PORT = 12345
+PORT = 9999
 clients = {}
 
 def broadcast(message, sender_socket=None, sender_name=None):
@@ -34,7 +34,7 @@ def handle_client(client_socket):
         name = client_socket.recv(1024).decode('utf-8')
         clients[name] = client_socket
         
-        print(f"{name} bergabung.")
+        print(f"\n{name} bergabung.")
         
         while True:
             try:
@@ -45,7 +45,7 @@ def handle_client(client_socket):
                 message_text = message.decode('utf-8')
                 if message_text == '/list':
                     user_list = "\n".join(clients.keys())
-                    response = f"User Online:\n{user_list}"
+                    response = f"\nUser Online:\n{user_list}"
                     client_socket.send(response.encode('utf-8'))
 
                 elif message_text.startswith("@"):
@@ -56,15 +56,15 @@ def handle_client(client_socket):
                         if not private_message(name, target_name, private_msg):
                             client_socket.send(f"User {target_name} tidak ditemukan.".encode('utf-8'))
                     else:
-                        client_socket.send("Format salah. Gunakan @nama pesanmu".encode('utf-8'))
+                        client_socket.send("\nFormat salah. Gunakan @nama pesanmu".encode('utf-8'))
                 else:
                     broadcast(message, client_socket, name)
             except Exception as e:
                 raise  
     except Exception as e:
         if name and name in clients:
-            print(f"{name} keluar. Error: {str(e)}")
-            broadcast(f"{name} keluar dari chat.".encode('utf-8'))
+            print(f"\n{name} keluar. Error: {str(e)}")
+            broadcast(f"\n{name} keluar dari chat.".encode('utf-8'))
             try:
                 client_socket.close()
             except:
